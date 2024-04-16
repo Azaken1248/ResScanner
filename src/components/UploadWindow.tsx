@@ -30,11 +30,13 @@ const Container = styled('div')({
 });
 
 const FileInfoTable = styled('table')({
-  width: '100%',
+  width: '100px',
   borderCollapse: 'collapse',
-  marginTop: '1rem',
+  marginTop: '3%',
   maxHeight: '200px',
   overflowY: 'auto',
+  maxWidth: '100%',
+  overflowX: 'scroll',
 });
 
 const FileInfoRow = styled('tr')({

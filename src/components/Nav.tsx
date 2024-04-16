@@ -10,19 +10,19 @@ function Nav() {
       <div className="nav-links" id="navLinks">
         <ul>
           <li>
-            <a href="/">HOME</a>
+            <a href="#/">HOME</a>
           </li>
           <li>
-            <a href="/">ABOUT</a>
+            <a href="#/">ABOUT</a>
           </li>
           <li>
-            <a href="/">COURSES</a>
+            <a href="#/">COURSES</a>
           </li>
           <li>
-            <a href="/">BLOG</a>
+            <a href="#/">BLOG</a>
           </li>
           <li>
-            <a href="/joinus">JOIN</a>
+            <a href="#/joinus">JOIN</a>
           </li>
         </ul>
       </div>
