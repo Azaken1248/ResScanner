@@ -13,13 +13,7 @@ function Nav() {
             <a href="#/">HOME</a>
           </li>
           <li>
-            <a href="#/">ABOUT</a>
-          </li>
-          <li>
-            <a href="#/">COURSES</a>
-          </li>
-          <li>
-            <a href="#/">BLOG</a>
+            <a href="#/recruiter">RECRUITER</a>
           </li>
           <li>
             <a href="#/joinus">JOIN</a>

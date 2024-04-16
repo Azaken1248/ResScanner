@@ -15,7 +15,58 @@ body {
 }
 
 .everything {
+    min-height: 100vh;
     background-image: url('./assets/stacked-peaks-haikei.svg');
     background-size: cover;
     padding: 1em;
+}
+
+.recruiter-leaderboard {
+    background-color: #fff;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+    border-radius: 8px;
+    padding: 2em;
+    margin: 1em auto;
+    white-space: pre-line;
+}
+
+.recruiter-leaderboard th {
+    text-align: center;
+    background-color: #e32121;
+    border-bottom: 3px solid black;
+
+}
+
+.recruiter-leaderboard th,
+td {
+    padding: 1em;
+}
+
+.recruiter-leaderboard td {
+    border-bottom: 1px solid black;
+
+}
+
+.recruiter-leaderboard tr {
+    transition: 0.5s;
+}
+
+.recruiter-leaderboard tr:hover {
+    background: #ffd4d4;
+}
+
+.recruitermain {
+    min-height: 100vh;
+    background-image: url('./assets/stacked-steps-haikei.svg');
+    background-size: cover;
+    padding: 1em;
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
 }
