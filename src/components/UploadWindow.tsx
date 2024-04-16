@@ -1,10 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 import "../stuff.css";
 const app = initializeApp(firebaseConfig);
