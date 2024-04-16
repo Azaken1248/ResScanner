@@ -8,6 +8,17 @@ import cafe from '../assets/cafeteria.png';
 import user1 from '../assets/user1.jpg';
 import user2 from '../assets/user2.jpg';
 
+import FacebookIcon from '@mui/icons-material/Facebook';
+import StarIcon from '@mui/icons-material/Star';
+import {
+  AlternateEmail,
+  Favorite,
+  Instagram,
+  StarBorder,
+  StarHalf,
+  WhatsApp,
+} from '@mui/icons-material';
+
 function home() {
   return (
     <>
@@ -167,11 +178,11 @@ function home() {
                 cumque, laborum autem temporibus vel quae quod?
               </p>
               <h3>Girl Name</h3>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star-half-stroke"></i>
+              <StarIcon />
+              <StarIcon />
+              <StarIcon />
+              <StarIcon />
+              <StarHalf />
             </div>
           </div>
           <div className="testimonial-col">
@@ -193,11 +204,11 @@ function home() {
                 cumque, laborum autem temporibus vel quae quod?
               </p>
               <h3>Guy Name</h3>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-regular fa-star"></i>
-              <i className="fa-regular fa-star"></i>
-              <i className="fa-regular fa-star"></i>
-              <i className="fa-regular fa-star"></i>
+              <StarIcon />
+              <StarIcon />
+              <StarIcon />
+              <StarIcon />
+              <StarBorder />
             </div>
           </div>
         </div>
@@ -216,13 +227,13 @@ function home() {
           quo.
         </p>
         <div className="icons">
-          <i className="fa-brands fa-facebook"></i>
-          <i className="fa-brands fa-instagram"></i>
-          <i className="fa-brands fa-whatsapp"></i>
-          <i className="fa-solid fa-at"></i>
+          <FacebookIcon />
+          <Instagram />
+          <WhatsApp />
+          <AlternateEmail />
         </div>
         <p>
-          Made with <i className="fa-solid fa-heart"></i> by Adi
+          Made with <Favorite style={{ color: 'pink' }} />
         </p>
       </section>
     </>

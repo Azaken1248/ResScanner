@@ -16,6 +16,9 @@ function Nav() {
             <a href="#/recruiter">RECRUITER</a>
           </li>
           <li>
+            <a href="https://75d330b730a06d86ce.gradio.live/">SUMMARIZE</a>
+          </li>
+          <li>
             <a href="#/joinus">JOIN</a>
           </li>
         </ul>
