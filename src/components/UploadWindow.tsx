@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 import "../stuff.css";
 const app = initializeApp(firebaseConfig);
@@ -71,37 +76,106 @@ export default function InputFileUpload() {
 
     setIsLoading(true);
 
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
+    // Create a FormData object to hold form data and files
+    const formData = new FormData();
+
+    // Get form data
+    const form = event.currentTarget as HTMLFormElement;
+
+    // Helper function to safely retrieve element values
+    const getElementValue = (elementName: string) => {
+      const element = form.elements.namedItem(elementName) as
+        | HTMLInputElement
+        | HTMLSelectElement
+        | HTMLTextAreaElement
+        | null;
+      return element?.value || "";
+    };
+
+    // Append form data to the FormData object
+    formData.append("name", getElementValue("name"));
+    formData.append("vit_email", getElementValue("vit_email"));
+    formData.append("phone_no", getElementValue("phone_no"));
+    formData.append("degree", getElementValue("degree"));
+    formData.append("cgpa", getElementValue("cgpa"));
+    formData.append("department", getElementValue("department"));
+    formData.append("experience", getElementValue("experience"));
+
+    // Append files to the FormData object
+    const firebaseLinks: string[] = [];
+    const uploadTasks = selectedFiles.map((file, index) => {
       const storageRef = ref(storage, file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          // Update uploadProgress array with current progress
-          setUploadProgress((prevProgress) => {
-            const updatedProgress = [...prevProgress];
-            updatedProgress[i] = progress;
-            return updatedProgress;
-          });
-        },
-        (error) => {
-          console.error("Upload error:", error);
-          setIsLoading(false);
-        },
-        () => {
-          // This callback is called when the upload is complete
-          if (i === selectedFiles.length - 1) {
+      return new Promise<void>((resolve) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = (
+              (snapshot.bytesTransferred / snapshot.totalBytes) *
+              100
+            ).toFixed(2);
+
+            // Update the progress state for the specific file
+            setUploadProgress((prevProgress) => {
+              const updatedProgress = [...prevProgress];
+              updatedProgress[index] = parseFloat(progress);
+              return updatedProgress;
+            });
+          },
+          (error) => {
+            console.error("Upload error:", error);
             setIsLoading(false);
-            setUploadSuccess(true);
-            console.log("Files uploaded successfully");
+          },
+          async () => {
+            // Upload successful, get download URL
+            const downloadURL = await getDownloadURL(storageRef);
+            // Add download URL to firebaseLinks array
+            firebaseLinks.push(downloadURL);
+
+            formData.append("link", downloadURL);
+            resolve();
           }
-        }
-      );
+        );
+      });
+    });
+
+    // Wait for all uploads to complete
+    try {
+      await Promise.all(uploadTasks);
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      setIsLoading(false);
+      return;
     }
+
+    // Add Firebase links to form data
+    firebaseLinks.forEach((link, index) => {
+      formData.append(`file_link_${index}`, link);
+    });
+
+    // Send form data and Firebase links to the Flask server
+    try {
+      const response = await fetch("http://localhost:5000/submit_form", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+
+      // Handle server response as needed
+      if (response.ok) {
+        setUploadSuccess(true);
+        console.log("Form submitted successfully!");
+      } else {
+        console.error("Failed to submit form:", data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
+    setIsLoading(false);
   };
 
   return (
