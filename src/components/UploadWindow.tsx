@@ -128,9 +128,7 @@ export default function InputFileUpload() {
             setIsLoading(false);
           },
           async () => {
-            // Upload successful, get download URL
             const downloadURL = await getDownloadURL(storageRef);
-            // Add download URL to firebaseLinks array
             firebaseLinks.push(downloadURL);
 
             formData.append("link", downloadURL);
@@ -140,7 +138,6 @@ export default function InputFileUpload() {
       });
     });
 
-    // Wait for all uploads to complete
     try {
       await Promise.all(uploadTasks);
     } catch (error) {
@@ -149,12 +146,6 @@ export default function InputFileUpload() {
       return;
     }
 
-    // Add Firebase links to form data
-    firebaseLinks.forEach((link, index) => {
-      formData.append(`file_link_${index}`, link);
-    });
-
-    // Send form data and Firebase links to the Flask server
     try {
       const response = await fetch("http://localhost:5000/submit_form", {
         method: "POST",
