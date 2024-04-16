@@ -48,6 +48,14 @@ td {
 
 }
 
+.recruiter-leaderboard tr {
+    transition: 0.5s;
+}
+
+.recruiter-leaderboard tr:hover {
+    background: #ffd4d4;
+}
+
 .recruitermain {
     min-height: 100vh;
     background-image: url('./assets/stacked-steps-haikei.svg');
@@ -57,4 +65,8 @@ td {
 
 .center {
     text-align: center;
+}
+
+.bold {
+    font-weight: bold;
 }
