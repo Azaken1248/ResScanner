@@ -1,7 +1,7 @@
-import InputFileUpload from './components/UploadWindow';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/home';
-import Nav from './components/Nav';
+import InputFileUpload from "./components/UploadWindow";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./components/home";
+import Nav from "./components/Nav";
 
 function App() {
   return (

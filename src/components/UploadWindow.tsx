@@ -1,77 +1,80 @@
-import { initializeApp } from 'firebase/app';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import firebaseConfig from './firebaseConfig';
-import '../stuff.css';
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import firebaseConfig from "./firebaseConfig";
+import "../stuff.css";
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
 });
 
-const Container = styled('div')({
-  backgroundColor: 'white',
-  border: '2px solid black',
-  borderRadius: '10px',
-  padding: '1.3rem',
+const Container = styled("div")({
+  backgroundColor: "white",
+  border: "2px solid black",
+  borderRadius: "10px",
+  padding: "1.3rem",
 });
 
-const FileInfoTable = styled('table')({
-  width: '100%',
-  borderCollapse: 'collapse',
-  marginTop: '1rem',
-  maxHeight: '200px',
-  overflowY: 'auto',
+const FileInfoTable = styled("table")({
+  width: "100%",
+  borderCollapse: "collapse",
+  marginTop: "1rem",
+  maxHeight: "200px",
+  overflowY: "auto",
 });
 
-const FileInfoRow = styled('tr')({
-  borderBottom: '1px solid #ccc',
+const FileInfoRow = styled("tr")({
+  borderBottom: "1px solid #ccc",
 });
 
-const FileInfoHeaderCell = styled('th')({
-  textAlign: 'left',
-  padding: '0.5rem',
+const FileInfoHeaderCell = styled("th")({
+  textAlign: "left",
+  padding: "0.5rem",
 });
 
-const FileInfoCell = styled('td')({
-  padding: '0.5rem',
+const FileInfoCell = styled("td")({
+  padding: "0.5rem",
 });
 
 export default function InputFileUpload() {
   const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       const fileList = Array.from(files);
       setSelectedFiles(fileList);
-      fileList.forEach(async (file) => {
-        console.log(file);
-        console.log('hi');
-        const storageRef = ref(storage, '' + file.name);
-        await uploadBytes(storageRef, file);
-        console.log('File uploaded successfully');
-        setUploadSuccess(true);
-      });
     }
   };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    for (const file of selectedFiles) {
+      const storageRef = ref(storage, "" + file.name);
+      await uploadBytes(storageRef, file);
+    }
+
+    setUploadSuccess(true);
+    console.log("Files uploaded successfully");
+  };
   const submitted = () => {
-    console.log('submitted');
+    console.log("submitted");
   };
   return (
     <>
@@ -82,7 +85,7 @@ export default function InputFileUpload() {
           be used according to our terms. Make sure to submit the resume in pdf
           format.
         </p>
-        <form className="needs-validation" onSubmit={submitted} noValidate>
+        <form className="needs-validation" onSubmit={handleSubmit} noValidate>
           <div className="row">
             <div className="mb-3 col-md-6">
               <label className="form-label" htmlFor="name">
@@ -209,7 +212,7 @@ export default function InputFileUpload() {
                 tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
               >
-                {selectedFiles.length > 0 ? 'Change Files' : 'Add Submission'}
+                {selectedFiles.length > 0 ? "Change Files" : "Add Submission"}
                 <VisuallyHiddenInput
                   type="file"
                   onChange={handleFileChange}
