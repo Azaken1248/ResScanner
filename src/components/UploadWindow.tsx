@@ -269,9 +269,9 @@ export default function InputFileUpload() {
                   name="department"
                   required
                 >
-                  <option value="">Select A Department</option>
+                  <option value="">Select A Position</option>
                   <option value="competitive_programming">
-                    Competitive Programming
+                    Software Engineer
                   </option>
                   <option value="web_development">Web Development</option>
                   <option value="design_and_content">Design and Content</option>

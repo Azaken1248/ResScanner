@@ -3,14 +3,14 @@ import '../stuff.css';
 function UserStuff() {
   const { state } = useLocation();
   const {
-    name = '',
-    email = '',
-    mobile = '',
-    course = '',
-    graduation = '',
-    position = '',
-    skills = '',
-    summary = '',
+    name = 'Error',
+    email = 'Error',
+    mobile = 'Error',
+    course = 'Error',
+    graduation = 'Error',
+    position = 'Error',
+    skills = 'Error',
+    summary = 'Error',
   } = state || {};
   return (
     <div className="everything">
