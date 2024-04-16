@@ -1,5 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 import "../stuff.css";
 const app = initializeApp(firebaseConfig);
@@ -9,6 +14,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -52,6 +58,8 @@ const FileInfoCell = styled("td")({
 
 export default function InputFileUpload() {
   const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [uploadProgress, setUploadProgress] = React.useState<number[]>([]);
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,23 +67,48 @@ export default function InputFileUpload() {
     if (files) {
       const fileList = Array.from(files);
       setSelectedFiles(fileList);
+      setUploadProgress(Array(fileList.length).fill(0));
     }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    for (const file of selectedFiles) {
-      const storageRef = ref(storage, "" + file.name);
-      await uploadBytes(storageRef, file);
-    }
+    setIsLoading(true);
 
-    setUploadSuccess(true);
-    console.log("Files uploaded successfully");
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+      const storageRef = ref(storage, file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          // Update uploadProgress array with current progress
+          setUploadProgress((prevProgress) => {
+            const updatedProgress = [...prevProgress];
+            updatedProgress[i] = progress;
+            return updatedProgress;
+          });
+        },
+        (error) => {
+          console.error("Upload error:", error);
+          setIsLoading(false);
+        },
+        () => {
+          // This callback is called when the upload is complete
+          if (i === selectedFiles.length - 1) {
+            setIsLoading(false);
+            setUploadSuccess(true);
+            console.log("Files uploaded successfully");
+          }
+        }
+      );
+    }
   };
-  const submitted = () => {
-    console.log("submitted");
-  };
+
   return (
     <>
       <div className="box">
@@ -244,6 +277,21 @@ export default function InputFileUpload() {
           <button className="btn btn-primary" type="submit">
             Submit
           </button>
+          {isLoading && (
+            <>
+              {selectedFiles.map((file, index) => (
+                <div key={index}>
+                  <p>{`Uploading ${file.name}: ${uploadProgress[index].toFixed(
+                    2
+                  )}%`}</p>
+                  <LinearProgress
+                    variant="determinate"
+                    value={uploadProgress[index]}
+                  />
+                </div>
+              ))}
+            </>
+          )}
         </form>
       </div>
     </>
