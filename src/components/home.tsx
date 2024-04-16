@@ -18,7 +18,7 @@ function home() {
             Lorem ipsum dolor sit amet.... <br />
             Lorem.!!
           </p>
-          <a href="" className="hero-btn">
+          <a href="#/" className="hero-btn">
             Visit us to know more
           </a>
         </div>

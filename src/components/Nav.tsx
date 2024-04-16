@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 function Nav() {
   return (
     <nav>
-      <a href="/">
+      <a href="#/">
         <img src={logo} alt="University logo" />
       </a>
       <div className="nav-links" id="navLinks">
