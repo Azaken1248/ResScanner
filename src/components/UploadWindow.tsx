@@ -343,25 +343,26 @@ export default function InputFileUpload() {
             </Container>
           </div>
 
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
-          {isLoading && (
-            <>
-              {selectedFiles.map((file, index) => (
-                <div key={index}>
-                  <p>{`Uploading ${file.name}: ${uploadProgress[index].toFixed(
-                    2
-                  )}%`}</p>
-                  <LinearProgress
-                    variant="determinate"
-                    value={uploadProgress[index]}
-                  />
-                </div>
-              ))}
-            </>
-          )}
-        </form>
+            <button className="btn btn-primary" type="submit">
+              Submit
+            </button>
+            {isLoading && (
+              <>
+                {selectedFiles.map((file, index) => (
+                  <div key={index}>
+                    <p>{`Uploading ${file.name}: ${uploadProgress[
+                      index
+                    ].toFixed(2)}%`}</p>
+                    <LinearProgress
+                      variant="determinate"
+                      value={uploadProgress[index]}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+          </form>
+        </div>
       </div>
     </>
   );
